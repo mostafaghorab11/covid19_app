@@ -3,6 +3,8 @@ import 'package:covid19/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../Widgets/widgets.dart';
+
 class InfoScreen extends StatefulWidget {
   const InfoScreen({Key? key}) : super(key: key);
 
@@ -50,11 +52,13 @@ class _InfoScreenState extends State<InfoScreen> {
               textBottom: 'About Covid-19.',
               offset: offset,
             ),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   // Symptoms part // horizontal scroll view
                   const Text(
                     'Symptoms',
@@ -103,8 +107,14 @@ class _InfoScreenState extends State<InfoScreen> {
                       text:
                       'Since the start of the coronavirus outbreak some places have fully embraced wearing facemasks'),
                   const SizedBox(
+                    height: 20,
+                  ),
+
+                  // Info_Panels
+                  const InfoWidget(),
+                  const SizedBox(
                     height: 50,
-                  )
+                  ),
                 ],
               ),
             ),
@@ -133,6 +143,7 @@ class SymptomCard extends StatelessWidget {
     // Item shape
     return Container(
       padding: const EdgeInsets.all(10),
+      width: (MediaQuery.of(context).size.width -20) /3,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: Colors.white,
@@ -153,6 +164,7 @@ class SymptomCard extends StatelessWidget {
           Image.asset(
             image,
             height: 90,
+            fit: BoxFit.contain,
           ),
           Text(
             title,

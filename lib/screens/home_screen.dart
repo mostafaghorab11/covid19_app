@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'dart:convert';
 
-import '../Widgets/counter.dart';
-import '../Widgets/my_header.dart';
+import 'package:covid19/screens/country_stats.dart';
+import 'package:flutter/material.dart';
+import '../Widgets/widgets.dart';
 import '../constant.dart';
+import '../network/api_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,14 +19,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    fetchWorldWideData();
+    fetchCountriesData();
     super.initState();
     // controller.addListener(onScroll);
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     controller.dispose();
     super.dispose();
   }
@@ -34,6 +35,26 @@ class _HomeScreenState extends State<HomeScreen> {
   void onScroll() {
     setState(() {
       offset = (controller.hasClients) ? controller.offset : 0;
+    });
+  }
+
+  late Map worldDataMap;
+
+  fetchWorldWideData() async {
+    final casesJson =
+        await TrackerService().getData('https://disease.sh/v3/covid-19/all');
+    setState(() {
+      worldDataMap = json.decode(casesJson);
+    });
+  }
+
+  late List countriesData;
+
+  fetchCountriesData() async {
+    final casesJson = await TrackerService()
+        .getData('https://disease.sh/v3/covid-19/countries?sort=deaths');
+    setState(() {
+      countriesData = json.decode(casesJson);
     });
   }
 
@@ -53,56 +74,55 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             // The drop down menu
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              height: 60,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25),
-                border: Border.all(
-                  color: const Color(0xFFE5E5E5),
-                ),
-              ),
-              child: Row(
-                children: [
-                  SvgPicture.asset('assets/icons/maps-and-flags.svg'),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    child: DropdownButton(
-                        isExpanded: true,
-                        underline: const SizedBox(),
-                        value: 'Indonesia',
-                        icon: SvgPicture.asset('assets/icons/dropdown.svg'),
-                        items: <String>[
-                          'Indonesia',
-                          'Bangladesh',
-                          'United States',
-                          'Japan'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (value) {}),
-                  )
-                ],
-              ),
-            ),
-
-            const SizedBox(
-              height: 20,
-            ),
-
+            // Container(
+            //   margin: const EdgeInsets.symmetric(horizontal: 20),
+            //   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            //   height: 60,
+            //   width: double.infinity,
+            //   decoration: BoxDecoration(
+            //     color: Colors.white,
+            //     borderRadius: BorderRadius.circular(25),
+            //     border: Border.all(
+            //       color: const Color(0xFFE5E5E5),
+            //     ),
+            //   ),
+            //   child: Row(
+            //     children: [
+            //       SvgPicture.asset('assets/icons/maps-and-flags.svg'),
+            //       const SizedBox(
+            //         width: 20,
+            //       ),
+            //       Expanded(
+            //         child: DropdownButton(
+            //             isExpanded: true,
+            //             underline: const SizedBox(),
+            //             value: 'Indonesia',
+            //             icon: SvgPicture.asset('assets/icons/dropdown.svg'),
+            //             items: <String>[
+            //               'Indonesia',
+            //               'Bangladesh',
+            //               'United States',
+            //               'Japan'
+            //             ].map<DropdownMenuItem<String>>((String value) {
+            //               return DropdownMenuItem<String>(
+            //                 value: value,
+            //                 child: Text(value),
+            //               );
+            //             }).toList(),
+            //             onChanged: (value) {}),
+            //       )
+            //     ],
+            //   ),
+            // ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Case update row
+                  // Case update Text and regional button
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -113,21 +133,38 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: kTitleTextStyle,
                         ),
                         TextSpan(
-                            text: 'Newest update Feb 11',
+                            text: 'Newest update today',
                             style: TextStyle(color: kTextLightColor))
                       ])),
-                      const Text(
-                        'See details',
-                        style: TextStyle(
-                            color: kPrimaryColor, fontWeight: FontWeight.w600),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const CountryStats()));
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: const Text(
+                            'Regional',
+                            style: TextStyle(
+                                color: kBackgroundColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
                       )
                     ],
                   ),
                   const SizedBox(height: 20),
 
-                  // Counter row
+                  // Cases' Counter row
                   Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
@@ -138,68 +175,101 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: kShadowColor,
                           ),
                         ]),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Counter(
-                          color: kInfectedColor,
-                          number: 1046,
-                          title: 'Infected',
-                        ),
-                        Counter(
-                          color: kDeathColor,
-                          number: 46,
-                          title: 'Deaths',
-                        ),
-                        Counter(
-                          color: kRecovercolor,
-                          number: 87,
-                          title: 'Recovered',
-                        ),
-                      ],
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Counter(
+                            color: kInfectedColor,
+                            number: worldDataMap['cases'],
+                            title: 'Infected',
+                          ),
+                          Counter(
+                            color: kDeathColor,
+                            number: worldDataMap['deaths'],
+                            title: 'Deaths',
+                          ),
+                          Counter(
+                            color: kRecovercolor,
+                            number: worldDataMap['recovered'],
+                            title: 'Recovered',
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
 
-                  // Spread of virus row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'Spread of Virus',
-                        style: kTitleTextStyle,
-                      ),
-                      Text(
-                        'See details',
-                        style: TextStyle(
-                            color: kPrimaryColor, fontWeight: FontWeight.w600),
-                      )
-                    ],
+                  // Most Affected Countries
+                  const Text(
+                    'Most Affected Countries',
+                    style: kTitleTextStyle,
                   ),
-
-                  //Map_image container
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    padding: const EdgeInsets.all(20),
-                    height: 178,
-                    width: double.infinity,
+                    child:
+                        MostInfectedCountriesWidget(countryData: countriesData),
+                    padding: const EdgeInsets.only(top: 10),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            offset: const Offset(0, 10),
+                            offset: const Offset(0, 4),
                             blurRadius: 30,
                             color: kShadowColor,
-                          )
+                          ),
                         ]),
-                    child: Image.asset(
-                      'assets/images/map.png',
-                      fit: BoxFit.contain,
-                    ),
-                  )
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+
+                  // const SizedBox(
+                  //   height: 20,
+                  // ),
+                  // Spread of virus row
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: const [
+                  //     Text(
+                  //       'Spread of Virus',
+                  //       style: kTitleTextStyle,
+                  //     ),
+                  //     Text(
+                  //       'See details',
+                  //       style: TextStyle(
+                  //           color: kPrimaryColor, fontWeight: FontWeight.w600),
+                  //     )
+                  //   ],
+                  // ),
+                  //
+                  // //Map_image container
+                  // Container(
+                  //   margin: const EdgeInsets.only(top: 20),
+                  //   padding: const EdgeInsets.all(20),
+                  //   height: 178,
+                  //   width: double.infinity,
+                  //   decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(20),
+                  //       color: Colors.white,
+                  //       boxShadow: [
+                  //         BoxShadow(
+                  //           offset: const Offset(0, 10),
+                  //           blurRadius: 30,
+                  //           color: kShadowColor,
+                  //         )
+                  //       ]),
+                  //   child: Image.asset(
+                  //     'assets/images/map.png',
+                  //     fit: BoxFit.contain,
+                  //   ),
+                  // )
                 ],
               ),
             )
