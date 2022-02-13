@@ -14,10 +14,9 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
-![](1.jpg | width=100)
-![2](2.jpg)
-![3](3.jpg)
-![4](4.jpg)
-![5](5.jpg)
-![6](6.jpg)
+<img src="https://github.com/mostafaghorab11/covid19_app/blob/main/1.jpg" width="400" />
 <img src="https://github.com/mostafaghorab11/covid19_app/blob/main/2.jpg" width="400" />
+<img src="https://github.com/mostafaghorab11/covid19_app/blob/main/3.jpg" width="400" />
+<img src="https://github.com/mostafaghorab11/covid19_app/blob/main/4.jpg" width="400" />
+<img src="https://github.com/mostafaghorab11/covid19_app/blob/main/5.jpg" width="400" />
+<img src="https://github.com/mostafaghorab11/covid19_app/blob/main/6.jpg" width="400" />
