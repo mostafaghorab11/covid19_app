@@ -20,4 +20,4 @@ samples, guidance on mobile development, and a full API reference.
 ![4](4.jpg)
 ![5](5.jpg)
 ![6](6.jpg)
-<img src="https://camo.githubusercontent.com/..." data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="200" height="400" />
+<img src="https://github.com/mostafaghorab11/covid19_app/blob/main/2.jpg" width="400" />
