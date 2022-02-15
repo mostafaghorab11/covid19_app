@@ -16,7 +16,6 @@ For help getting started with Flutter, view our
 samples, guidance on mobile development, and a full API reference.
 
 <img src="https://github.com/mostafaghorab11/covid19_app/blob/main/1.jpg" width="300" /> <img src="https://github.com/mostafaghorab11/covid19_app/blob/main/2.jpg" width="300" />
-<img src="https://github.com/mostafaghorab11/covid19_app/blob/main/3.jpg" width="300" />
-<img src="https://github.com/mostafaghorab11/covid19_app/blob/main/4.jpg" width="300" />
-<img src="https://github.com/mostafaghorab11/covid19_app/blob/main/5.jpg" width="300" />
-<img src="https://github.com/mostafaghorab11/covid19_app/blob/main/6.jpg" width="300" />
+<img src="https://github.com/mostafaghorab11/covid19_app/blob/main/3.jpg" width="300" /> <img src="https://github.com/mostafaghorab11/covid19_app/blob/main/4.jpg" width="300" />
+<img src="https://github.com/mostafaghorab11/covid19_app/blob/main/5.jpg" width="300" /> <img src="https://github.com/mostafaghorab11/covid19_app/blob/main/6.jpg" width="300" />
+
